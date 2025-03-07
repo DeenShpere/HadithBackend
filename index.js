@@ -23,5 +23,15 @@ const serveHadiths = async (req, res) => {
 
 app.get("/api/hadiths", serveHadiths);
 
+
+app.get("/quran", async (req, res) => {
+    try {
+        const response = await axios.get("http://api.alquran.cloud/v1/surah");
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch Quran data" });
+    }
+});
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
