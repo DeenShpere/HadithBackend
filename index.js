@@ -33,5 +33,19 @@ app.get("/quran", async (req, res) => {
     }
 });
 
+app.get("/quran/:surahNumber", async (req, res) => {
+    const surahNumber = req.params.surahNumber;
+    try {
+        console.log(`✅ Fetching Ayahs for Surah ${surahNumber}`);
+        const response = await axios.get(`http://api.alquran.cloud/v1/surah/${surahNumber}`);
+        console.log("✅ Sending Ayahs to frontend");
+        res.json(response.data);
+    } catch (error) {
+        console.error(`❌ Error fetching Ayahs for Surah ${surahNumber}:`, error.message);
+        res.status(500).json({ error: "Failed to fetch Ayahs" });
+    }
+});
+
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
